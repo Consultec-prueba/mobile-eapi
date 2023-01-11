@@ -1,0 +1,109 @@
+#%RAML 1.0
+title: mobile-eapi
+baseUri: http://mobile-eapi-vyvw.us-e2.cloudhub.io/api/v1
+
+types:
+  Account:
+    type: object
+    description: Cuenta
+    properties:
+      id:
+        type: string
+        description: Secuencial único de la tabla
+      accountNumber:
+        type: string
+        description: Número de cuenta bancaria generado
+      debitAccount: 
+        type: Cuenta
+        description: Cuenta de donde se aplican los débitos automáticos
+      savingsAmount: 
+        type: number
+        format: double
+        description: Monto del ahorro semanal para la cuenta ahorro viaje
+      createdAt?:
+        type: datetime
+        description: Fecha de creación de la cuenta
+      customer: 
+        type: Customer
+        description: Cliente propietario de la cuenta 
+      StatusInfo?:
+        type: StatusInfo
+        description: Descripcion de errores
+  StatusInfo:
+    type: object
+    description: Informacion Cliente
+    properties:
+      StatusCode:
+        type: string
+        description: Codigo de Error
+      StatusDesc:
+        type: string
+        description: Descripcion de Error 
+  Customer:
+    type: object
+    description: Informacion Cliente
+    properties:
+      firstName?:
+        type: string
+        description: Nombre del cliente
+      lastName?:
+        type: string
+        description: Apellido del cliente
+      avatar?:
+        type: string
+        description: URL de la imagen de avatar del cliente
+      createdAt?:
+        type: datetime
+        description: Fecha de creación del cliente
+      status?:
+        type: Status
+        description: Status del cliente
+      id:
+        type: string
+        description: Identificador único del cliente
+  Status:
+    type: object
+    description: Status del cliente 
+    properties:
+      id:
+        type: integer
+        description: Identificador único del status
+      name:
+        type: string
+        description: Nombre del status
+  Cuenta:
+    type: object
+    description: Informacion Cuenta
+    properties:
+      accountNumber:
+        type: string
+        description: Numero de cuenta 
+  Client:
+    type: object
+    description: Client information
+    properties:
+      debitAccount: 
+        type: Cuenta
+        description: Cuenta de donde se aplican los débitos automáticos
+      savingsAmount: 
+        type: number
+        format: double
+        description: Monto del ahorro semanal para la cuenta ahorro viaje
+      customer: 
+        type: Customer
+        description: Cliente propietario de la cuenta
+/travel-account:
+  post:
+    displayName: Create Travel account
+    description: Creación de una cuenta de ahorro para viajes
+    body:
+      application/json:
+        type: Client
+        example: !include Example/mobile-eapi-RQ.yaml
+    responses:
+      200: 
+        body: 
+          application/json:
+            type: Account
+            example: !include Example/mobile-eapi-RS.yaml
+       
